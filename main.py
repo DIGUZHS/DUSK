@@ -7,7 +7,7 @@ import os
 import random
 
 today = datetime.now()
-todays = str(today)
+todays = str(datetime.now(%Y-%m-%d))
 start_date = os.environ['START_DATE']
 city = os.environ['CITY']
 birthday = os.environ['BIRTHDAY']
@@ -38,7 +38,7 @@ def get_birthday():
   return (next - today).days
 
 def get_words():
-  words = requests.get("https://api.shadiao.pro/chp")
+  words = requests.get("https://api.shadiao.pro/pyq")
   if words.status_code != 200:
     return get_words()
   return words.json()['data']['text']
@@ -51,6 +51,6 @@ client = WeChatClient(app_id, app_secret)
 
 wm = WeChatMessage(client)
 wea, low, high = get_weather()
-data = {"date":{"value":todays}, "city":{"value":city}, "weather":{"value":wea},"min_temperature":{"value":low},"max_temperature":{"value":high}, "love_day":{"value":get_count()},"birthday":{"value":get_birthday()},"note":{"value":get_words(), "color":get_random_color()}}
+data = {"date":{"value":todays}, "city":{"value":city}, "weather":{"value":wea},"min_temperature":{"value":low,"color":"#7FBA00"},"max_temperature":{"value":high, "color":"#F25022"}, "birthday":{"value":get_birthday(),"color":"#FF0000"},"note":{"value":get_words(), "color":get_random_color()}}
 res = wm.send_template(user_id, template_id, data)
 print(res)
